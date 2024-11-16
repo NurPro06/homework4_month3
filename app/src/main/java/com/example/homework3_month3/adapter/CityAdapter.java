@@ -4,57 +4,51 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.homework3_month3.databinding.ItemCountryBinding;
+import com.example.homework3_month3.OnItemClick;
+import com.example.homework3_month3.databinding.ItemCityBinding;
 
-public class CityAdapter  extends ListAdapter<String, CityAdapter.CountryViewHolder> {
+import java.util.ArrayList;
 
+public class CityAdapter extends RecyclerView.Adapter<CityViewHolder> {
 
-    private static final DiffUtil.ItemCallback<String> DIFF_CALLBACK = new DiffUtil.ItemCallback<String>() {
-        @Override
-        public boolean areItemsTheSame(@NonNull String oldItem, @NonNull String newItem) {
-            return oldItem.equals(newItem);
-        }
+    private ArrayList<String> cityList;
+    private OnItemClick onItemClick;
 
-        @Override
-        public boolean areContentsTheSame(@NonNull String oldItem, @NonNull String newItem) {
-            return oldItem.equals(newItem);
-        }
-    };
-
-    protected CityAdapter(@NonNull DiffUtil.ItemCallback<String> diffCallback) {
-        super(diffCallback);
+    public CityAdapter(ArrayList<String> cityList, OnItemClick onItemClick) {
+        this.cityList = cityList;
+        this.onItemClick = onItemClick;
     }
 
     @NonNull
     @Override
-    public CityAdapter.CityViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemCountryBinding binding = ItemCountryBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-        return new CountryAdapter.CountryViewHolder(binding);
+    public CityViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new CityViewHolder(ItemCityBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CountryAdapter.CountryViewHolder holder, int position) {
-        holder.bind(getItem(position));
+    public void onBindViewHolder(@NonNull CityViewHolder holder, int position) {
+        holder.onBind(cityList.get(position));
+        holder.itemView.setOnClickListener(v -> onItemClick.onClick(position));
     }
 
-    class CountryViewHolder extends RecyclerView.ViewHolder {
-        private final ItemCountryBinding binding;
+    @Override
+    public int getItemCount() {
+        return cityList.size();
+    }
+}
 
-        CountryViewHolder(ItemCountryBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
+class CityViewHolder extends RecyclerView.ViewHolder {
 
-        void bind(String city) {
-            binding.tvCountry.setText(city);
-        }
+    private ItemCityBinding binding;
+
+    public CityViewHolder(@NonNull ItemCityBinding binding) {
+        super(binding.getRoot());
+        this.binding = binding;
     }
 
-    public interface OnClickListener {
-        void onClick(String country);
+    public void onBind(String city) {
+        binding.tvCity.setText(city);
     }
 }
