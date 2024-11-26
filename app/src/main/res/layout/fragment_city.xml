@@ -7,10 +7,10 @@
     tools:context=".fragment.CityFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_cities"
+        android:id="@+id/rv_city"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:itemCount="7"
+        tools:itemCount="3"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_continent" />
 
